@@ -13,13 +13,15 @@ public class UserDetails {
 	private final String principal;
 	private final Collection<? extends GrantedAuthority> authorities;
 	private final Set<String> scopes;
+	private final String token;
 
 	public UserDetails(long id, String principal, Collection<? extends GrantedAuthority> authorities,
-			Set<String> scopes) {
+			Set<String> scopes, String token) {
 		this.id = id;
 		this.principal = principal;
 		this.authorities = authorities;
 		this.scopes = scopes;
+		this.token = token;
 	}
 
 	@ApiModelProperty(notes = "The id of the user", required = true)
@@ -40,6 +42,11 @@ public class UserDetails {
 	@ApiModelProperty(notes = "The scopes that the user has consented to", required = true)
 	public Set<String> getScopes() {
 		return scopes;
+	}
+
+	@ApiModelProperty(notes = "The token that was presented", required = true)
+	public String getToken() {
+		return token;
 	}
 
 }

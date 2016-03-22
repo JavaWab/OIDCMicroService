@@ -37,6 +37,7 @@ public class OIDCUserAuthenticationConverter implements UserAuthenticationConver
 	}
 
 	public Authentication extractAuthentication(Map<String, ?> map) {
+		System.out.println("extractAuthentication");
 		if (map.containsKey("sub")) {
 			Object principal = map.get("sub");
 			Collection authorities = getAuthorities(map);
@@ -51,6 +52,7 @@ public class OIDCUserAuthenticationConverter implements UserAuthenticationConver
 	}
 
 	private Collection<? extends GrantedAuthority> getAuthorities(Map<String, ?> map) {
+		System.out.println("getAuthorities");
 		if (!(map.containsKey("authorities"))) {
 			return this.defaultAuthorities;
 		}

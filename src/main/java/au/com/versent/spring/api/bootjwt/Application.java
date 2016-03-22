@@ -22,11 +22,11 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.UserAuthenticationConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
+import au.com.versent.spring.api.security.OIDCDefaultAccessTokenConverter;
 import au.com.versent.spring.api.security.OIDCUserAuthenticationConverter;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ImplicitGrantBuilder;
@@ -74,7 +74,10 @@ public class Application extends SpringBootServletInitializer {
 
 		@Override
 		public void configure(ResourceServerSecurityConfigurer resources) {
-			resources.resourceId("testResource");
+			// RSA Config
+			resources.resourceId("SampleConfidentialApp");
+			// HMAC Config
+			// resources.resourceId("testResource");
 		}
 
 		@Override
@@ -93,13 +96,18 @@ public class Application extends SpringBootServletInitializer {
 		public JwtAccessTokenConverter tokenEnhancer() {
 			final JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
 			jwtAccessTokenConverter.setAccessTokenConverter(tokenConverter());
-			jwtAccessTokenConverter.setSigningKey("Passw0rd");
+			// RSA Config
+			jwtAccessTokenConverter.setVerifierKey(
+					"-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAm2I2+GHcXXzwyjqMP6E4shjxfpAfgqbCY/nF5oTq0SkcRKvsdJzuLbmufkqx1rQqxwF/aZnbZppcVtR4TAhExmo2NnV7WjSwdd+EynQJrkWlsuK1UQ3JHMo5iAAEQ11xoMBIsUwfg5HYKCELmjnWetwhm5aUJ9Gq45v9kzeZki2oCoVe5LQfVVHEYssr+SfVrhi6+OffeefgCRse6vv5T4zlh4xXKDNUsBxYYB3Vg97tDcdgpfx8BudpBx+1ITk9Dazu8eegXN5KdRqJGgM5LSRIWjK+OumR1a2ReUcXlglWTVfsG43UUUby2bql3E3uc7XpxzQaPpt4aDqfOYMUxwIDAQAB-----END PUBLIC KEY-----");
+
+			// HMAC Config
+			//jwtAccessTokenConverter.setSigningKey("Passw0rd");
 			return jwtAccessTokenConverter;
 		}
 
 		@Bean
 		public AccessTokenConverter tokenConverter() {
-			DefaultAccessTokenConverter oidcAccessTokenConverter = new DefaultAccessTokenConverter();
+			OIDCDefaultAccessTokenConverter oidcAccessTokenConverter = new OIDCDefaultAccessTokenConverter();
 			oidcAccessTokenConverter.setUserTokenConverter(userTokenConverter());
 			return oidcAccessTokenConverter;
 		}
