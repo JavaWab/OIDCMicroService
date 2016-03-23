@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -18,6 +19,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
+@Api(value = "apiController")
 @PreAuthorize("hasRole('Admin') and #oauth2.hasScope('resource.READ')")
 public class SampleAPIController {
 
@@ -36,7 +38,6 @@ public class SampleAPIController {
 		OAuth2Request clientAuthentication = ((OAuth2Authentication) auth).getOAuth2Request();
 		OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) auth.getDetails();
 		String token = details.getTokenValue();
-		System.out.println("IDToken: " + token);
 		return new UserDetails(1, auth.getName(), auth.getAuthorities(), clientAuthentication.getScope(), token);
 	}
 }

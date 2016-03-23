@@ -132,11 +132,11 @@ public class Application extends SpringBootServletInitializer {
 
 		@Bean
 		SecurityScheme oauth() {
-			return new OAuthBuilder().name("petstore_auth").grantTypes(grantTypes()).scopes(scopes()).build();
+			return new OAuthBuilder().name("suncorp_auth").grantTypes(grantTypes()).scopes(scopes()).build();
 		}
 
 		List<AuthorizationScope> scopes() {
-			return newArrayList(new AuthorizationScope("Customer.info id_token token", "Authorise"));
+			return newArrayList(new AuthorizationScope("Resource.READ", "read your details"));
 		}
 
 		List<GrantType> grantTypes() {
@@ -147,10 +147,10 @@ public class Application extends SpringBootServletInitializer {
 
 		@Bean
 		SecurityContext securityContext() {
-			AuthorizationScope readScope = new AuthorizationScope("Customer.info id_token token", "read your details");
+			AuthorizationScope readScope = new AuthorizationScope("Resource.READ", "read your details");
 			AuthorizationScope[] scopes = new AuthorizationScope[1];
 			scopes[0] = readScope;
-			SecurityReference securityReference = SecurityReference.builder().reference("petstore_auth").scopes(scopes)
+			SecurityReference securityReference = SecurityReference.builder().reference("suncorp_auth").scopes(scopes)
 					.build();
 
 			return SecurityContext.builder().securityReferences(newArrayList(securityReference)).forPaths(regex("/me"))
