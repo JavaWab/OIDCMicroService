@@ -17,6 +17,8 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
+import io.swagger.annotations.AuthorizationScope;
 
 @RestController
 @Api(value = "apiController")
@@ -28,7 +30,8 @@ public class SampleAPIController {
 	public SampleAPIController() {
 	}
 
-	@ApiOperation(value = "me", nickname = "me")
+	@ApiOperation(value = "me", nickname = "me", authorizations = { @Authorization(value = "suncorp_auth", scopes = {
+			@AuthorizationScope(scope = "Resource.READ", description = "Read Resource") }) })
 	@RequestMapping(value = "/me", method = RequestMethod.GET, produces = "application/json")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "auth"), })
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = UserDetails.class),
